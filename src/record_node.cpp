@@ -25,6 +25,7 @@ int main(int argc, char** argv)
     ros::NodeHandle nh;
 
     std::string topic, path_save, file_name;
+    bool append_date{true};
     if (!nh.getParam("/record/topic", topic))
     {
         ROS_WARN("no topic param found");
@@ -44,7 +45,7 @@ int main(int argc, char** argv)
     {
         ROS_WARN("file_name param found");
     }
-
+    nh.getParam("/record/append_date", append_date);
 
     // split topics with space (use regrex)
     ROS_INFO("Starting record node");
@@ -56,6 +57,7 @@ int main(int argc, char** argv)
     rosbag::RecorderOptions options;
 	
     options.prefix = path_save + "/" + file_name;
+    options.append_date = append_date;
 
     if(topic.empty())
     {
